@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
+import { db } from "~/server/db";
 
 const mockPics = [
   "https://utfs.io/f/569ae1fb-f1e7-488b-8325-c5262a2e53cf-g8cswf.png",
@@ -18,10 +19,15 @@ const mockImages = mockPics.map((url, index) => ({
 
 export default async function Home() {
 
-
+  const posts = await db.query.posts.findMany();
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="flex flex-wrap">
+        {
+          posts.map((post) => (
+            <div key={post.id}> {post.name}</div>
+          ))
+        }
         {
           mockImages.map((image) => (
             <div key={image.id} className="w-1/2 p-4">
