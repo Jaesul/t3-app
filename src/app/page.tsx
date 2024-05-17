@@ -11,13 +11,26 @@ const mockPics = [
   "https://utfs.io/f/082dc637-f7c8-4950-b4e3-0490dd200451-556482.png"
 ]
 
+const mockImages = mockPics.map((url, index) => ({
+  id: index + 1,
+  url, 
+}))
+
 export default async function Home() {
 
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      hello team
-    </main>
+      <div className="flex flex-wrap">
+        {
+          mockImages.map((image) => (
+            <div key={image.id} className="w-1/2 p-4">
+                <img src={image.url} alt="image" />
+              </div>
+          ))
+        }
+      </div>
+      </main>
   );
 }
 
