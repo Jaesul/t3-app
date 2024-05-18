@@ -5,20 +5,21 @@ import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { db } from "~/server/db";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { getMyImages } from "~/server/queries";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
 async function Images() {
-  const image = await db.query.image.findMany({
-    orderBy: (model, { desc }) => desc(model.id)
-  });
+  const images = await getMyImages();
+
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap gap-4">
 
       {
-        image.map((image) => (
-          <div key={image.id} className="w-1/2 p-4 flex flex-col">
-            <img src={image.url} alt="image" />
+        images.map((image) => (
+          <div key={image.id} className="w-48 h-48 flex flex-col">
+            <Image src={image.url} alt={image.name} style={{objectFit: "contain"}} width={192} height={192}/>
             <div>
               {image.name}
             </div>
